@@ -57,6 +57,8 @@ async function importBackup(e) {
     if (data.app !== 'conjuga' || !Array.isArray(data.verbs)) {
       throw new Error('不是 Conjuga 的备份文件')
     }
+    // 覆盖提醒：备份是快照合并（同 id 覆盖），导入后本机进度以备份为准
+    const expAt = data.exportedAt ? new Date(data.exportedAt).toLocaleString() : '未知时间'
     // 合并策略：按 id 覆盖（重复的被新数据替换，不删现有）
     const verbMap = new Map(library.verbs.map(v => [v.id, v]))
     for (const v of data.verbs) verbMap.set(v.id, v)
@@ -82,7 +84,7 @@ async function importBackup(e) {
     mistakes.mistakes.splice(0, mistakes.mistakes.length, ...newMistakes)
     notes.notes.splice(0, notes.notes.length, ...newNotes)
 
-    say('ok', `导入完成：${newVerbs.length} 动词 / ${newTags.length} 标签 / ${newMistakes.length} 错题卡 / ${newNotes.length} 笔记（合并覆盖模式）`)
+    say('ok', `导入完成：${newVerbs.length} 动词 / ${newTags.length} 标签 / ${newMistakes.length} 错题卡 / ${newNotes.length} 笔记（备份时间：${expAt}）`)
   } catch (err) {
     say('err', `导入失败: ${err.message}`)
   } finally {
@@ -137,6 +139,7 @@ const stats = computed(() => [
     <div class="card">
       <h4>数据备份</h4>
       <p class="desc">你的数据全部保存在本设备的浏览器中，不会上传到任何服务器。为避免浏览器清理缓存时丢失数据，建议每周导出一次备份文件，保存到网盘或本地文件夹。</p>
+      <p class="desc"><b>跨设备使用规则</b>：选定一台设备作为主力机（录入、练习、复习都在主力机上进行）；其他设备需要查看最新数据时，先在主力机导出备份，再在当前设备导入。注意：导入的是备份时刻的快照，导入后请继续在主力机上使用，避免两边同时改动导致进度分叉。</p>
       <div class="row">
         <button class="btn" @click="exportBackup">⬇ 导出备份（JSON）</button>
         <label class="btn ghost file-btn">
