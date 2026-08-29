@@ -1,0 +1,19 @@
+{
+  "name": "Conjuga · 西语动词变位",
+  "short_name": "Conjuga",
+  "description": "西班牙语动词变位学习工具：超级矩阵对比、艾宾浩斯错题复习",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#FAFAFA",
+  "theme_color": "#E94B3C",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

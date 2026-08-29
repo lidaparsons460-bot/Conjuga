@@ -1,0 +1,14 @@
+# 依赖（几百 MB，任何人 clone 后 npm install 自行恢复）
+node_modules/
+
+# 构建产物（npm run build 随时可再生成）
+dist/
+
+# 日志与系统文件
+*.log
+.DS_Store
+Thumbs.db
+
+# 环境变量（本项目暂无，防患于未然）
+.env
+.env.*

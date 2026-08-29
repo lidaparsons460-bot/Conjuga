@@ -1,0 +1,200 @@
+/* =====================================================
+   Conjuga 三层 CSS 令牌系统（表现层设计手册 v3.2 附录 B）
+   TIER 1: Primitive → TIER 2: Semantic → TIER 3: Component
+   组件代码一律从 Semantic / Component 层取值，禁止硬编码。
+   ===================================================== */
+
+/* ===== TIER 1: PRIMITIVE TOKENS ===== */
+:root {
+  /* 品牌色（西班牙橙红） */
+  --p-brand-50:  #FFF5F3;
+  --p-brand-100: #FDE8E5;
+  --p-brand-200: #F9C9C3;
+  --p-brand-500: #E94B3C;
+  --p-brand-600: #D93E30; /* 对比度降级备用 */
+  --p-brand-700: #B72D21;
+  /* 功能色 */
+  --p-ok-500:    #34C759;
+  --p-err-500:   #FF3B30;
+  --p-warn-500:  #FF9500;
+  /* 亮色中性 */
+  --p-nl-0:      #FFFFFF;
+  --p-nl-50:     #FAFAFA;
+  --p-nl-200:    #E5E5EA;
+  --p-nl-500:    #6E6E73;
+  --p-nl-900:    #1D1D1F;
+  /* 暗色中性 */
+  --p-nd-900:    #1C1C1E;
+  --p-nd-800:    #2C2C2E;
+  --p-nd-700:    #38383A;
+  --p-nd-500:    #98989D;
+  --p-nd-100:    #F5F5F7;
+  /* 字体 */
+  --p-font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans CJK SC", sans-serif;
+  --p-font-mono: "SF Mono", Menlo, Consolas, monospace;
+  /* 字号 */
+  --p-fs-12: 12px; --p-fs-14: 14px; --p-fs-16: 16px; --p-fs-18: 18px;
+  --p-fs-20: 20px; --p-fs-24: 24px; --p-fs-30: 30px; --p-fs-36: 36px;
+  /* 间距 */
+  --p-sp-1: 4px;  --p-sp-2: 8px;  --p-sp-3: 12px; --p-sp-4: 16px;
+  --p-sp-6: 24px; --p-sp-10: 40px; --p-sp-12: 48px;
+  /* 圆角 / 阴影 */
+  --p-r-sm: 4px; --p-r-md: 8px; --p-r-lg: 12px; --p-r-full: 999px;
+  --p-sh-lg: 0 8px 24px rgba(0,0,0,.12);
+  /* 触摸目标 */
+  --p-touch-target: 48px;
+  /* Z-Index 层级 */
+  --p-z-0: 0;   --p-z-1: 1;   --p-z-10: 10;  --p-z-40: 40; --p-z-41: 41;
+  --p-z-50: 50; --p-z-80: 80; --p-z-81: 81;  --p-z-90: 90; --p-z-100: 100;
+  /* 透明度 */
+  --p-op-graduated: .62;
+  --p-op-disabled: .40;
+}
+
+/* ===== TIER 2: SEMANTIC TOKENS ===== */
+:root {
+  /* 颜色 */
+  --color-brand:        var(--p-brand-500);
+  --color-brand-deep:  var(--p-brand-600);
+  --color-brand-light: var(--p-brand-100);
+  --color-brand-strong:var(--p-brand-50);
+  --color-ok:      var(--p-ok-500);
+  --color-err:     var(--p-err-500);
+  --color-warn:    var(--p-warn-500);
+  --color-bg:      var(--p-nl-50);
+  --color-surface: var(--p-nl-0);
+  --color-border:  var(--p-nl-200);
+  --color-text:    var(--p-nl-900);
+  --color-text-muted: var(--p-nl-500);
+  /* 字体 */
+  --font-sans: var(--p-font-sans);
+  --font-mono: var(--p-font-mono);
+  /* 字号 */
+  --fs-caption:  var(--p-fs-12);
+  --fs-sub-body: var(--p-fs-14);
+  --fs-body:     var(--p-fs-16);
+  --fs-subtitle: var(--p-fs-18);
+  --fs-h-small:  var(--p-fs-20);
+  --fs-h3:        var(--p-fs-24);
+  --fs-h2:        var(--p-fs-30);
+  --fs-h1:        var(--p-fs-36);
+  /* 间距 */
+  --space-xs: var(--p-sp-1);
+  --space-sm: var(--p-sp-2);
+  --space-md: var(--p-sp-4);
+  --space-lg: var(--p-sp-6);
+  --space-xl: var(--p-sp-10);
+  /* 圆角 / 阴影 */
+  --radius-sm:  var(--p-r-sm);
+  --radius:     var(--p-r-md);
+  --radius-lg:  var(--p-r-lg);
+  --radius-pill: var(--p-r-full);
+  --shadow-lg: var(--p-sh-lg);
+  /* 触摸目标 */
+  --touch-min: var(--p-touch-target);
+  /* Z-Index */
+  --z-base: 0;
+  --z-card-elevated: 1;
+  --z-sticky: 10;
+  --z-drawer-overlay: 40;
+  --z-drawer: 41;
+  --z-dropdown: 50;
+  --z-modal-overlay: 80;
+  --z-modal: 81;
+  --z-toast: 90;
+  --z-tooltip: 100;
+  /* 透明度 */
+  --op-graduated: var(--p-op-graduated);
+  --op-disabled:  var(--p-op-disabled);
+}
+
+/* ===== Dark Mode Overrides ===== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg:         var(--p-nd-900);
+    --color-surface:    var(--p-nd-800);
+    --color-border:     var(--p-nd-700);
+    --color-text:       var(--p-nd-100);
+    --color-text-muted: var(--p-nd-500);
+    --color-brand-light:  rgba(233,75,60,.16);
+    --color-brand-strong: rgba(233,75,60,.25);
+  }
+}
+
+/* ===== TIER 3: COMPONENT TOKENS ===== */
+:root {
+  /* 按钮 */
+  --btn-primary-bg: var(--color-brand);
+  --btn-primary-fg: #FFFFFF;
+  --btn-secondary-bg: var(--color-surface);
+  --btn-secondary-fg: var(--color-text);
+  --btn-danger-bg: var(--color-err);
+  --btn-height: 40px;
+  --btn-height-lg: 48px;
+  --btn-radius: var(--radius);
+  /* 输入框 */
+  --input-height: 40px;
+  --input-person-height: 44px;
+  --input-bg: var(--color-surface);
+  --input-border: var(--color-border);
+  --input-border-focus: var(--color-brand);
+  --input-focus-ring: 0 0 0 2px rgba(233,75,60,.15);
+  /* 卡片 */
+  --card-bg: var(--color-surface);
+  --card-border: var(--color-border);
+  --card-radius: var(--radius-lg);
+  /* 侧边栏 */
+  --sidebar-width: 150px;
+  --sidebar-width-desktop: 180px;
+  --sidebar-bg: var(--color-surface);
+  --sidebar-border: var(--color-border);
+  --sidebar-active-bg: var(--color-brand-light);
+  --sidebar-active-fg: var(--color-brand);
+  /* 表格 */
+  --table-head-bg: var(--color-brand-light);
+  --table-head-fg: var(--color-brand);
+  --table-border: var(--color-border);
+  --table-matrix-mono-fs: 12.5px;
+  /* 标签 Chip */
+  --chip-bg: var(--color-brand-strong);
+  --chip-fg: var(--color-text);
+  --chip-border: var(--color-border);
+  --chip-active-bg: var(--color-brand);
+  --chip-active-fg: #FFFFFF;
+  /* 弹层 */
+  --modal-overlay-bg: rgba(0,0,0,.45);
+  --toast-bg: rgba(0,0,0,.84);
+  --toast-fg: #FFFFFF;
+}
+
+/* ===== 超级矩阵专用令牌（Day 3 使用，提前落地） ===== */
+:root {
+  --mega-col-frozen: 110px;
+  --mega-cell-fs: 11.5px;
+  --mega-person-fs: 9.5px;
+  --mega-verb-fs: 13px;
+  --mega-tense-fs: 12px;
+  --mega-irreg-bg: rgba(233,75,60,.06);
+  --mega-irreg-fg: var(--color-brand);
+  --mega-spell-bg: rgba(255,149,0,.06);
+  --mega-spell-fg: var(--color-warn);
+  --mega-row-hover: rgba(233,75,60,.08);
+  --mega-corner-bg: var(--color-surface);
+  --mega-head-bg: var(--color-brand-light);
+  --mega-col-z: 1;
+  --mega-head-z: 2;
+  --mega-corner-z: 3;
+}
+
+/* ===== 基础 Reset ===== */
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  -webkit-font-smoothing: antialiased;
+}
